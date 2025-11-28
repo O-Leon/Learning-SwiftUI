@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-/// Mini Proyecto 1: Botón con borde animado
+/// Mini Project 1: Animated Stroke Button
 struct AnimatedStrokeButtonView: View {
     @State private var tapCount = 0
+    @State private var showingInfo = false
     
     var body: some View {
         VStack(spacing: 40) {
@@ -28,6 +29,21 @@ struct AnimatedStrokeButtonView: View {
         .padding()
         .navigationTitle("Animated Button")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    showingInfo = true
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+            }
+        }
+        .sheet(isPresented: $showingInfo) {
+            ProjectInfoSheet(
+                title: "Animated Stroke Button",
+                content: ProjectInfoContent.animatedStrokeButton
+            )
+        }
     }
 }
 

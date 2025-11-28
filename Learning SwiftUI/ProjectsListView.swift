@@ -7,31 +7,46 @@
 
 import SwiftUI
 
-/// Vista principal que muestra la lista de todos los mini proyectos
+/// Main view displaying the list of all mini projects
 struct ProjectsListView: View {
     let projects: [MiniProject] = [
+        // Newest first
         MiniProject(
-            title: "Animated Stroke Button",
-            description: "Botón con borde animado usando gradientes",
-            icon: "sparkles.rectangle.stack"
+            title: "Photo Scrubber",
+            description: "Horizontal photo gallery with thumbnail scrubber",
+            icon: "photo.on.rectangle.angled"
         ) {
-            AnimatedStrokeButtonView()
+            PhotoScrubberView()
         },
         MiniProject(
-            title: "Gradientes de Color",
-            description: "Experimenta con diferentes gradientes y colores",
+            title: "Scrollable Icon Bar",
+            description: "Horizontal scrollable bar with selectable icons",
+            icon: "square.grid.3x3.fill"
+        ) {
+            IconScrollBarView()
+        },
+        MiniProject(
+            title: "Animations Playground",
+            description: "Test different types of SwiftUI animations",
+            icon: "wand.and.stars"
+        ) {
+            AnimationsPlaygroundView()
+        },
+        MiniProject(
+            title: "Color Gradients",
+            description: "Experiment with different gradients and colors",
             icon: "paintpalette.fill"
         ) {
             ColorGradientView()
         },
         MiniProject(
-            title: "Playground de Animaciones",
-            description: "Prueba diferentes tipos de animaciones SwiftUI",
-            icon: "wand.and.stars"
+            title: "Animated Stroke Button",
+            description: "Button with animated border using gradients",
+            icon: "sparkles.rectangle.stack"
         ) {
-            AnimationsPlaygroundView()
+            AnimatedStrokeButtonView()
         },
-        // Agrega más proyectos aquí
+        // Add more projects here
     ]
     
     var body: some View {
@@ -41,13 +56,13 @@ struct ProjectsListView: View {
                     ProjectRow(project: project)
                 }
             }
-            .navigationTitle("SwiftUI Mini Proyectos")
+            .navigationTitle("SwiftUI Mini Projects")
             .navigationBarTitleDisplayMode(.large)
         }
     }
 }
 
-/// Vista de fila para cada proyecto en la lista
+/// Row view for each project in the list
 struct ProjectRow: View {
     let project: MiniProject
     

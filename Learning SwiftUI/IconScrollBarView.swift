@@ -7,33 +7,34 @@
 
 import SwiftUI
 
-/// Mini Proyecto 4: Barra desplazable de íconos seleccionables
+/// Mini Project 4: Scrollable Icon Selection Bar
 struct IconScrollBarView: View {
-    // Estado para rastrear el ícono seleccionado
+    // State to track the selected icon
     @State private var selectedIcon: IconItem? = nil
+    @State private var showingInfo = false
     
-    // Lista de íconos disponibles
+    // Available icons list
     let icons: [IconItem] = [
-        IconItem(name: "house.fill", title: "Casa", color: .blue, description: "Un lugar acogedor para vivir"),
-        IconItem(name: "heart.fill", title: "Corazón", color: .red, description: "Símbolo de amor y pasión"),
-        IconItem(name: "star.fill", title: "Estrella", color: .yellow, description: "Brilla en el cielo nocturno"),
-        IconItem(name: "bolt.fill", title: "Rayo", color: .orange, description: "Poder y energía"),
-        IconItem(name: "moon.fill", title: "Luna", color: .purple, description: "Luz en la oscuridad"),
-        IconItem(name: "sun.max.fill", title: "Sol", color: .orange, description: "Fuente de luz y calor"),
-        IconItem(name: "cloud.fill", title: "Nube", color: .gray, description: "Flota en el cielo"),
-        IconItem(name: "flame.fill", title: "Fuego", color: .red, description: "Caliente y brillante"),
-        IconItem(name: "drop.fill", title: "Gota", color: .blue, description: "Agua cristalina"),
-        IconItem(name: "leaf.fill", title: "Hoja", color: .green, description: "Naturaleza y vida"),
-        IconItem(name: "snowflake", title: "Copo", color: .cyan, description: "Frío invernal"),
-        IconItem(name: "camera.fill", title: "Cámara", color: .indigo, description: "Captura momentos"),
-        IconItem(name: "music.note", title: "Música", color: .pink, description: "Melodías armoniosas"),
-        IconItem(name: "gamecontroller.fill", title: "Juegos", color: .purple, description: "Diversión y entretenimiento"),
-        IconItem(name: "book.fill", title: "Libro", color: .brown, description: "Conocimiento y sabiduría"),
+        IconItem(name: "house.fill", title: "Home", color: .blue, description: "A cozy place to live"),
+        IconItem(name: "heart.fill", title: "Heart", color: .red, description: "Symbol of love and passion"),
+        IconItem(name: "star.fill", title: "Star", color: .yellow, description: "Shines in the night sky"),
+        IconItem(name: "bolt.fill", title: "Bolt", color: .orange, description: "Power and energy"),
+        IconItem(name: "moon.fill", title: "Moon", color: .purple, description: "Light in the darkness"),
+        IconItem(name: "sun.max.fill", title: "Sun", color: .orange, description: "Source of light and heat"),
+        IconItem(name: "cloud.fill", title: "Cloud", color: .gray, description: "Floats in the sky"),
+        IconItem(name: "flame.fill", title: "Fire", color: .red, description: "Hot and bright"),
+        IconItem(name: "drop.fill", title: "Drop", color: .blue, description: "Crystal clear water"),
+        IconItem(name: "leaf.fill", title: "Leaf", color: .green, description: "Nature and life"),
+        IconItem(name: "snowflake", title: "Snow", color: .cyan, description: "Winter cold"),
+        IconItem(name: "camera.fill", title: "Camera", color: .indigo, description: "Capture moments"),
+        IconItem(name: "music.note", title: "Music", color: .pink, description: "Harmonious melodies"),
+        IconItem(name: "gamecontroller.fill", title: "Games", color: .purple, description: "Fun and entertainment"),
+        IconItem(name: "book.fill", title: "Book", color: .brown, description: "Knowledge and wisdom"),
     ]
     
     var body: some View {
         VStack(spacing: 0) {
-            // Área de visualización del ícono seleccionado
+            // Selected icon display area
             if let selected = selectedIcon {
                 SelectedIconView(icon: selected)
                     .transition(.asymmetric(
@@ -47,9 +48,9 @@ struct IconScrollBarView: View {
             Divider()
                 .padding(.vertical, 20)
             
-            // Barra horizontal desplazable de íconos
+            // Horizontal scrollable icon bar
             VStack(alignment: .leading, spacing: 12) {
-                Text("Selecciona un ícono")
+                Text("Select an icon")
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal)
@@ -75,12 +76,27 @@ struct IconScrollBarView: View {
             
             Spacer()
         }
-        .navigationTitle("Íconos")
+        .navigationTitle("Icons")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    showingInfo = true
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+            }
+        }
+        .sheet(isPresented: $showingInfo) {
+            ProjectInfoSheet(
+                title: "Scrollable Icon Bar",
+                content: ProjectInfoContent.iconScrollBar
+            )
+        }
     }
 }
 
-// MARK: - Vista del ícono seleccionado
+// MARK: - Selected Icon View
 
 struct SelectedIconView: View {
     let icon: IconItem
@@ -88,7 +104,7 @@ struct SelectedIconView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            // Ícono grande con animación
+            // Large icon with animation
             ZStack {
                 Circle()
                     .fill(icon.color.opacity(0.2))
@@ -104,7 +120,7 @@ struct SelectedIconView: View {
                     .foregroundStyle(icon.color)
             }
             
-            // Información del ícono
+            // Icon information
             VStack(spacing: 8) {
                 Text(icon.title)
                     .font(.title)
@@ -125,7 +141,7 @@ struct SelectedIconView: View {
     }
 }
 
-// MARK: - Vista cuando no hay selección
+// MARK: - Empty Selection View
 
 struct EmptySelectionView: View {
     var body: some View {
@@ -134,11 +150,11 @@ struct EmptySelectionView: View {
                 .font(.system(size: 60))
                 .foregroundStyle(.gray.opacity(0.3))
             
-            Text("Selecciona un ícono")
+            Text("Select an icon")
                 .font(.title3)
                 .foregroundStyle(.secondary)
             
-            Text("Desliza y toca cualquier ícono de abajo")
+            Text("Scroll and tap any icon below")
                 .font(.subheadline)
                 .foregroundStyle(.tertiary)
         }
@@ -147,7 +163,7 @@ struct EmptySelectionView: View {
     }
 }
 
-// MARK: - Botón de ícono individual
+// MARK: - Individual Icon Button
 
 struct IconButton: View {
     let icon: IconItem
@@ -158,7 +174,7 @@ struct IconButton: View {
         Button(action: action) {
             VStack(spacing: 8) {
                 ZStack {
-                    // Fondo del botón
+                    // Button background
                     RoundedRectangle(cornerRadius: 16)
                         .fill(isSelected ? icon.color.opacity(0.2) : Color(.systemBackground))
                         .frame(width: 70, height: 70)
@@ -170,14 +186,14 @@ struct IconButton: View {
                                 )
                         )
                     
-                    // Ícono
+                    // Icon
                     Image(systemName: icon.name)
                         .font(.system(size: 28))
                         .foregroundStyle(isSelected ? icon.color : .primary)
                 }
                 .scaleEffect(isSelected ? 1.05 : 1.0)
                 
-                // Título del ícono
+                // Icon title
                 Text(icon.title)
                     .font(.caption)
                     .foregroundStyle(isSelected ? icon.color : .secondary)
@@ -188,14 +204,14 @@ struct IconButton: View {
     }
 }
 
-// MARK: - Modelo de datos
+// MARK: - Data Model
 
 struct IconItem: Identifiable, Equatable {
     let id = UUID()
-    let name: String       // Nombre del SF Symbol
-    let title: String      // Título para mostrar
-    let color: Color       // Color del ícono
-    let description: String // Descripción del ícono
+    let name: String       // SF Symbol name
+    let title: String      // Display title
+    let color: Color       // Icon color
+    let description: String // Icon description
 }
 
 // MARK: - Preview
